@@ -1,0 +1,97 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic);
+
+body {
+  margin: 0;
+  font-family: Ubuntu, Arial;
+}
+
+body>header {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  background-color: goldenrod;
+  border-bottom: 1px grey solid;
+}
+
+body>header>h1 {
+  margin: 0;
+  color: #5C4306;
+  font-family: Rockwell, Ubuntu, Arial;
+  font-weight: normal;
+  font-style: italic;
+  text-shadow: 0 0 10px rgba(255,255,255,1);
+  font-size: 125%;
+}
+
+nav#users {
+  display: block;
+  float: left;
+}
+
+nav#courses {
+  display: table-cell;
+  min-width: 300px;
+  border-right: 1px grey solid;
+}
+
+nav#courses>header>h1 {
+  font-family: Rockwell, Ubuntu Mono, Arial;
+  font-weight: bold;
+  font-size: 100%;
+}
+
+nav#courses>ul {
+  list-style: none;
+  padding: 0;
+}
+
+nav#courses>ul>li {
+  border: 1px dotted grey;
+}
+
+main {
+  display: table-cell;
+  width: 100%;
+  border-radius: 5px;
+}
+
+main>ul {
+  padding: 0;
+  margin: 0;
+}
+
+.assignment {
+  list-style: none;
+  border-bottom: 1px solid grey;
+  padding: 10px;
+}
+
+.assignment.unsaved {
+  background-color: darkkhaki;
+}
+
+.assignment:not(:last-child) {
+  list-style: none;
+  border-bottom: 1px solid grey;
+  padding: 10px;
+}
+
+.assignment #name {
+  display: block;
+  width: 100%;
+}
+
+.assignment #date {
+  display: block;
+  width: 100%;
+}
+
+.assignment #description {
+  display: block;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: none;
+  height: 50px;
+  background-color: rgba(0,0,0,0.2);
+  
+}

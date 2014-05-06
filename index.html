@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      EZOrganizer
+    </title>
+    <script src="scripts/backbone-min.js"></script>
+    <script src="scripts/jquery-1.11.1.min.js"></script>
+    <script src="scripts/underscore-min.js"></script>
+    <script src="scripts/ourModel.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+  </head>
+  <body>
+    <header>
+      <nav id="users">
+        <select>
+          <option value="User 1">User 1</option>
+          <option value="User 2">User 2</option>
+        </select>
+      </nav>
+      <h1>
+        EZOrganizer
+      </h1>
+    </header>
+    <nav id="courses">
+      <header>
+        <h1>
+          Courses
+        </h1>
+      </header>
+      <ul id="courseList">
+        <li><a href="">Intro to Horse Whispering</a></li>
+        <li><a href="">Expert Underwater Basket Weaving</a></li>
+      </ul>
+    </nav>
+    <main>
+      <ul id="assignmentList">
+      </ul>
+    </main>
+    <footer>
+    </footer>
+    
+    <script type="text/template" id="assignment-template">
+      <div class="assignment view">
+        <input class="studentComplete" type="checkbox" <%= studentComplete ? 'checked="checked"' : '' %> />
+        <input class="parentComplete" type="checkbox" <%= parentComplete ? 'checked="checked"' : '' %> />
+        <span id="name" contenteditable><%- name %></span>
+        <span id="dueDate" contenteditable><%- dueDate %></span>
+        <span id="description" contenteditable><%- description %></span>
+        <a class="delete">Delete assignment</a>
+      </div>
+    </script>
+    
+  </body>
+</html>

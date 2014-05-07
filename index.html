@@ -13,9 +13,8 @@
   <body>
     <header>
       <nav id="users">
-        <select>
-          <option value="User 1">User 1</option>
-          <option value="User 2">User 2</option>
+        <select id="userList">
+          
         </select>
       </nav>
       <h1>
@@ -29,26 +28,36 @@
         </h1>
       </header>
       <ul id="courseList">
-        <li><a href="">Intro to Horse Whispering</a></li>
-        <li><a href="">Expert Underwater Basket Weaving</a></li>
+        
       </ul>
     </nav>
     <main>
       <ul id="assignmentList">
+        
       </ul>
     </main>
     <footer>
     </footer>
     
     <script type="text/template" id="assignment-template">
-      <div class="assignment view">
+      <li class="assignment view">
         <input class="studentComplete" type="checkbox" <%= studentComplete ? 'checked="checked"' : '' %> />
         <input class="parentComplete" type="checkbox" <%= parentComplete ? 'checked="checked"' : '' %> />
         <span id="name" contenteditable><%- name %></span>
         <span id="dueDate" contenteditable><%- dueDate %></span>
         <span id="description" contenteditable><%- description %></span>
         <a class="delete">Delete assignment</a>
-      </div>
+      </li>
+    </script>
+    <script type="text/template" id="course-template">
+      <li class="course view">
+        <a href=""><%- name %></a>
+      </li>
+    </script>
+    <script type="text/template" id="user-template">
+      <option class="user view" value="<%- id %>">
+        <%- name %>
+      </option>
     </script>
     
   </body>

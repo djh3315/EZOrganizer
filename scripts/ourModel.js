@@ -1,3 +1,5 @@
+var AssView;
+
 $(function(){
   /*
    * Models
@@ -184,16 +186,58 @@ $(function(){
     },
     select: function(){
       //TODO Display the assignments for the given course.
+      currentCourse = this.model;
+      AssView.reset;
     }
   });
   
   /*
-   * Application
+   * App views
    */
-  var AppView = Backbone.View.extend({
-    el: $("body"),
+  var AssignmentsView = Backbone.View.extend({
+    el: $("ul#assignments"),
     events: {
-      "click #new-assignment":  "createOnEnter"
+      "click #new-assignment":  "create"
+    },
+    initialize: function() {
+      this.listenTo(AllAssignments, 'add', this.addOne);
+      this.listenTo(AllAssignments, 'reset', this.reset);
+
+      this.main = $('main>ul#assignments');
+
+      AllAssignments.fetch();
+    },
+    add: function(assignment) {
+      if(assignment.course == currentCourse) {
+        var view = new AssignmentView({model: assignment});
+      	this.$("#assignmentList").append(view.render().el);
+      }
+    },
+    reset: function() {
+      this.$("#assignmentList").empty();
+      if(currentCourse != null)
+        currentCourse.assignments.each(this.addOne, this);
+    },
+    create: function() {
+      if(currentCourse != null)
+     	 AllAssignments.create({course: currentCourse});
+    }
+  });
+  AssView = new AssignmentsView;
+  var UserView = Backbone.View.extend({
+
+    // Instead of generating a new element, bind to the existing skeleton of
+    // the App already present in the HTML.
+    el: $("#userList"),
+
+    // Our template for the line of statistics at the bottom of the app.
+    statsTemplate: _.template($('#stats-template').html()),
+
+    // Delegated events for creating new items, and clearing completed ones.
+    events: {
+      "keypress #new-todo":  "createOnEnter",
+      "click #clear-completed": "clearCompleted",
+      "click #toggle-all": "toggleAllComplete"
     },
 
     // At initialization we bind to the relevant events on the `Todos`
@@ -231,17 +275,64 @@ $(function(){
 
       this.allCheckbox.checked = !remaining;
     },
-    addOne: function(assignment) {
-      var view = new AssignmentView({model: assignment});
-      this.$("#assignmentList").append(view.render().el);
+
+    // Add a single todo item to the list by creating a view for it, and
+    // appending its element to the `<ul>`.
+    addOne: function(todo) {
+      var view = new TodoView({model: todo});
+      this.$("#todo-list").append(view.render().el);
     },
+
+    // Add all items in the **Todos** collection at once.
     addAll: function() {
-      AllAssignments.each(this.addOne, this);
+      Todos.each(this.addOne, this);
     },
-    create: function(e) {
-      AllAssignments.create({course: currentCourse);
+
+    // If you hit return in the main input field, create new **Todo** model,
+    // persisting it to *localStorage*.
+    createOnEnter: function(e) {
+      if (e.keyCode != 13) return;
+      if (!this.input.val()) return;
+
+      Todos.create({title: this.input.val()});
+      this.input.val('');
+    },
+
+    // Clear all done todo items, destroying their models.
+    clearCompleted: function() {
+      _.invoke(Todos.done(), 'destroy');
+      return false;
+    },
+
+    toggleAllComplete: function () {
+      var done = this.allCheckbox.checked;
+      Todos.each(function (todo) { todo.save({'done': done}); });
     }
+
   });
-  var App = new AppView;
+
+  // Finally, we kick things off by creating the **App**.
+  var UsView = new UserView;
+  
+  /*
+   * Dummy Users and Courses
+   */
+  var t1 = new Teacher({
+    name: "Ms. Fitz"
+  });
+  AllTeachers.add(t1);
+  var s1 = new Student{
+    name: "Billy Klubbe"
+  });
+  AllStudents.add(s1);
+  AllParents.create({
+    name: "Mr. Klubbe",
+    children: AllStudents.where({name: "Billy Klubbe"})
+  });
+  AllCourses.create({
+    name: "Introduction to Horse Whispering",
+    students: AllStudents.where({name: "Billy Klubbe"}),
+    teacher: 
+  });
       
 });

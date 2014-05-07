@@ -161,14 +161,15 @@ $(function(){
     lastEdited: new Date,
     edit: function() {
       this.lastEdited = new Date;
+      if(!this.$el.hasClass("unsaved"))
+        setTimeout(function(){
+          view.save();
+        }, autosaveDuration);
       this.$el.addClass("unsaved");
       var view = this;
-      setTimeout(function(){
-        console.log("autosaving");
-        view.save();
-      }, autosaveDuration);
     },
     save: function() {
+      var view = this;
       if(this.lastEdited.getTime()+autosaveDuration < new Date().getTime()) {
         var value = this.input.val();
         this.model.save({
@@ -178,6 +179,10 @@ $(function(){
         });
         this.$el.removeClass("unsaved");
         this.lastEdited = new Date;
+      } else {
+        setTimeout(function(){
+          view.save();
+        }, 5);
       }
     },
     destroy: function() {
@@ -221,7 +226,9 @@ $(function(){
     add: function(assignment) {
       if(assignment.course == currentCourse) {
         var view = new AssignmentView({model: assignment});
-      	this.$("#assignmentList").append(view.render().el).hide().slideDown("slow");
+        var newView = $(view.render().el);
+      	this.$("#assignmentList").append(newView);
+        newView.hide().slideDown("slow");
       }
     },
     reset: function() {

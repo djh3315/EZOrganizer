@@ -42,12 +42,12 @@
     </footer>
     
     <script type="text/template" id="assignment-template">
+      <a class="delete">Delete</a>
       <input class="studentComplete" type="checkbox" <%= studentComplete ? 'checked="checked"' : '' %> />
       <input class="parentComplete" type="checkbox" <%= parentComplete ? 'checked="checked"' : '' %> />
       <span id="name" contenteditable><%- name %></span>
       <span id="dueDate" contenteditable><%- dueDate %></span>
       <span id="description" contenteditable><%- description %></span>
-      <a class="delete">Delete assignment</a>
     </script>
     <script type="text/template" id="course-template">
       <li class="course view">

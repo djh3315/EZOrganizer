@@ -55,6 +55,32 @@ main {
   border-radius: 5px;
 }
 
+main a#new-assignment {
+  display: inline-block;
+  border-radius: 3px;
+  border: 1px grey solid;
+  background-color: darkgrey;
+  padding: 5px;
+  -webkit-transition: background-color 0.25s; /* For Safari 3.1 to 6.0 */
+  transition: background-color 0.25s;
+  -webkit-user-select: none; /* Chrome/Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+main a#new-assignment:hover {
+  background-color: lightgrey;
+  cursor: pointer;
+}
+
+main a#new-assignment:active {
+  background-color: white;
+  cursor: pointer;
+}
+
 main>ul {
   padding: 0;
   margin: 0;
@@ -64,10 +90,12 @@ main>ul {
   list-style: none;
   border-bottom: 1px solid grey;
   padding: 10px;
+  -webkit-transition: background-color 0.25s; /* For Safari 3.1 to 6.0 */
+  transition: background-color 0.25s;
 }
 
 .assignment.unsaved {
-  background-color: darkkhaki;
+  background-color: khaki;
 }
 
 .assignment:first-child {
@@ -100,6 +128,25 @@ main>ul {
   display: inline-block;
   border-radius: 3px;
   border: 1px grey solid;
-  background-color: lightgrey;
+  background-color: darkgrey;
   padding: 5px;
+  float: right;
+  -webkit-transition: background-color 0.25s; /* For Safari 3.1 to 6.0 */
+  transition: background-color 0.25s;
+  -webkit-user-select: none; /* Chrome/Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.assignment a.delete:hover {
+  background-color: #DDD;
+  cursor: pointer;
+}
+
+.assignment a.delete:active {
+  background-color: white;
+  cursor: pointer;
 }

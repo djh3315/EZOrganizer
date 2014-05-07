@@ -132,6 +132,7 @@ $(function(){
    */
   var AssignmentView = Backbone.View.extend({
     tagName:  "li",
+    className: "assignment",
     template: _.template($('#assignment-template').html()),
     events: {
       "click a.delete" : "destroy",
@@ -158,21 +159,24 @@ $(function(){
 
     lastSaved: new Date,
     save: function() {
-      if(lastSaved.getTime()+2000 < new Date.getTime()) {
+      if(this.lastSaved.getTime()+2000 < new Date().getTime()) {
         var value = this.input.val();
         this.model.save({
-          name: this.$el.find("#name").val(),
-          description: this.$el.find("#description").val(),
-          dueDate: this.$el.find("#dueDate").val()
+          name: this.$el.find("#name").text(),
+          description: this.$el.find("#description").text(),
+          dueDate: this.$el.find("#dueDate").text()
         });
         this.$el.removeClass("unsaved");
-        lastSaved = new Date;
+        this.lastSaved = new Date;
+        
       } else {
         this.$el.addClass("unsaved");
       }
     },
     destroy: function() {
-      this.model.destroy();
+      this.$el.slideUp("slow", function(){
+        this.model.destroy();
+      });
     }
   });
   var CourseView = Backbone.View.extend({
@@ -210,7 +214,7 @@ $(function(){
       if(assignment.course == currentCourse) {
         var view = new AssignmentView({model: assignment});
         console.log(view.render().el);
-      	this.$("#assignmentList").append(view.render().el);
+      	this.$("#assignmentList").append(view.render().el).slideDown();
       }
     },
     reset: function() {

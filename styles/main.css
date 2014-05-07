@@ -95,3 +95,11 @@ main>ul {
   background-color: rgba(0,0,0,0.2);
   
 }
+
+.assignment a.delete {
+  display: inline-block;
+  border-radius: 3px;
+  border: 1px grey solid;
+  background-color: lightgrey;
+  padding: 5px;
+}

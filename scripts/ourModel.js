@@ -1,3 +1,4 @@
+var autosaveDuration = 2000;
 var AssView;
 var currentCourse;
 var currentUser;
@@ -136,7 +137,7 @@ $(function(){
     template: _.template($('#assignment-template').html()),
     events: {
       "click a.delete" : "destroy",
-      "input *"      : "save"
+      "input *"      : "edit"
     },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -157,9 +158,18 @@ $(function(){
     //  this.model.toggleParentComplete();
     //},
 
-    lastSaved: new Date,
+    lastEdited: new Date,
+    edit: function() {
+      this.lastEdited = new Date;
+      this.$el.addClass("unsaved");
+      var view = this;
+      setTimeout(function(){
+        console.log("autosaving");
+        view.save();
+      }, autosaveDuration);
+    },
     save: function() {
-      if(this.lastSaved.getTime()+2000 < new Date().getTime()) {
+      if(this.lastEdited.getTime()+autosaveDuration < new Date().getTime()) {
         var value = this.input.val();
         this.model.save({
           name: this.$el.find("#name").text(),
@@ -167,15 +177,13 @@ $(function(){
           dueDate: this.$el.find("#dueDate").text()
         });
         this.$el.removeClass("unsaved");
-        this.lastSaved = new Date;
-        
-      } else {
-        this.$el.addClass("unsaved");
+        this.lastEdited = new Date;
       }
     },
     destroy: function() {
+      var view = this;
       this.$el.slideUp("slow", function(){
-        this.model.destroy();
+        view.model.destroy();
       });
     }
   });
@@ -213,8 +221,7 @@ $(function(){
     add: function(assignment) {
       if(assignment.course == currentCourse) {
         var view = new AssignmentView({model: assignment});
-        console.log(view.render().el);
-      	this.$("#assignmentList").append(view.render().el).slideDown();
+      	this.$("#assignmentList").append(view.render().el).hide().slideDown("slow");
       }
     },
     reset: function() {

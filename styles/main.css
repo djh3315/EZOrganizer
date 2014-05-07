@@ -70,9 +70,9 @@ main>ul {
   background-color: darkkhaki;
 }
 
-.assignment:not(:last-child) {
+.assignment:first-child {
   list-style: none;
-  border-bottom: 1px solid grey;
+  border-top: 1px solid grey;
   padding: 10px;
 }
 

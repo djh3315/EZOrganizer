@@ -4,9 +4,10 @@
     <title>
       EZOrganizer
     </title>
-    <script src="scripts/backbone-min.js"></script>
     <script src="scripts/jquery-1.11.1.min.js"></script>
     <script src="scripts/underscore-min.js"></script>
+    <script src="scripts/backbone-min.js"></script>
+    <script src="scripts/backbone.localStorage.js"></script>
     <script src="scripts/ourModel.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/main.css">
   </head>
@@ -31,7 +32,8 @@
         
       </ul>
     </nav>
-    <main>
+    <main id="assignments">
+      <a id="new-assignment" href="">add an assignment</a>
       <ul id="assignmentList">
         
       </ul>

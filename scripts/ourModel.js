@@ -45,7 +45,7 @@ $(function(){
       return {
         name: "new assignment...",
         order: AllAssignments.nextOrder(),
-        dueDate: new Date(),
+        dueDate: new Date().toDateString(),
         description: null,
         studentComplete: false,
         parentComplete: false,
@@ -79,7 +79,7 @@ $(function(){
    */  
   var StudentList = Backbone.Collection.extend({
     model: Student,
-    localStorage: new Backbone.LocalStorage("students-backbone"),
+    localStorage: new Backbone.LocalStorage("students_backbone"),
     nextOrder: function() {
       if (!this.length) return 1;
       return this.last().get('order') + 1;
@@ -89,7 +89,7 @@ $(function(){
   var AllStudents = new StudentList;
   var ParentList = Backbone.Collection.extend({
     model: Parent,
-    localStorage: new Backbone.LocalStorage("parents-backbone"),
+    localStorage: new Backbone.LocalStorage("parents_backbone"),
     nextOrder: function() {
       if (!this.length) return 1;
       return this.last().get('order') + 1;
@@ -99,7 +99,7 @@ $(function(){
   var AllParents = new ParentList;
   var TeacherList = Backbone.Collection.extend({
     model: Teacher,
-    localStorage: new Backbone.LocalStorage("teachers-backbone"),
+    localStorage: new Backbone.LocalStorage("teachers_backbone"),
     nextOrder: function() {
       if (!this.length) return 1;
       return this.last().get('order') + 1;
@@ -109,7 +109,7 @@ $(function(){
   var AllTeachers = new TeacherList;
   var AssignmentList = Backbone.Collection.extend({
     model: Assignment,
-    localStorage: new Backbone.LocalStorage("assignments-backbone"),
+    localStorage: new Backbone.LocalStorage("assignments_backbone"),
     nextOrder: function() {
       if (!this.length) return 1;
       return this.last().get('order') + 1;
@@ -119,7 +119,7 @@ $(function(){
   var AllAssignments = new AssignmentList;
   var CourseList = Backbone.Collection.extend({
     model: Course,
-    localStorage: new Backbone.LocalStorage("courses-backbone"),
+    localStorage: new Backbone.LocalStorage("courses_backbone"),
     nextOrder: function() {
       if (!this.length) return 1;
       return this.last().get('order') + 1;
@@ -127,6 +127,32 @@ $(function(){
     comparator: 'order'
   });
   var AllCourses = new CourseList;
+  
+  /*
+   * Dummy Users and Courses
+   */
+  var t1 = new Teacher({
+    name: "Ms. Fitz"
+  });
+  AllTeachers.add(t1);
+  var s1 = new Student({
+    name: "Billy Klubbe"
+  });
+  AllStudents.add(s1);
+  var p1 = new Parent({
+    name: "Mr. Klubbe",
+    children: [s1]
+  });
+  AllParents.add(p1);
+  var c1 = new Course({
+    name: "Introduction to Horse Whispering",
+    students: [s1],
+    teacher: t1
+  });
+  AllCourses.add(c1);
+  
+  currentCourse = c1;
+  currentUser = s1;
   
   /*
    * Views
@@ -148,6 +174,21 @@ $(function(){
       this.$el.toggleClass('studentComplete', this.model.get('studentComplete'));
       this.$el.toggleClass('parentComplete', this.model.get('parentComplete'));
       this.input = this.$('.edit'); //Huh?
+      var newView = this.$el;
+      var newViewl = this;
+      newView.find("#dp").datepicker({
+          dateFormat: "D MM dd yy"
+      });
+      newView.find("#dp").change(function(){
+        newView.find("#dueDate").text( newView.find("#dp").val());
+        newViewl.edit();
+      });
+      newView.find("#dueDate").click(function() {
+        newView.find("#dp").datepicker("show");
+      });
+      newView.find("input").change(function() {
+        newViewl.edit();
+      });
       return this;
     },
     
@@ -200,8 +241,8 @@ $(function(){
     },
     select: function(){
       // Change the display of the course view.
-      AllCourses.
-      this.$el.addClass();
+      //AllCourses.
+      //this.$el.addClass();
       
       // Display the assignments for the given course.
       currentCourse = this.model;
@@ -224,21 +265,22 @@ $(function(){
       AllAssignments.fetch();
     },
     add: function(assignment) {
-      if(assignment.course == currentCourse) {
+      //if(assignment.course == currentCourse) {
         var view = new AssignmentView({model: assignment});
         var newView = $(view.render().el);
-      	this.$("#assignmentList").append(newView);
+      	this.$("#assignmentList").prepend(newView);
         newView.hide().slideDown("slow");
-      }
+      //}
     },
     reset: function() {
       this.$("#assignmentList").empty();
-      if(currentCourse != null)
+      //if(currentCourse != null)
         currentCourse.assignments.each(this.add, this);
     },
     create: function() {
-      if(currentCourse != null)
+      if(currentCourse != null){
         AllAssignments.create({course: currentCourse});
+      }
     }
   });
   AssView = new AssignmentsView;
@@ -274,29 +316,34 @@ $(function(){
   var UsView = new UserView;
   */
   
-  /*
-   * Dummy Users and Courses
-   */
-  var t1 = new Teacher({
-    name: "Ms. Fitz"
+  $("select").each(function() {
+    $(this).click(function() {
+      var mode = $( this ).val();
+      $("body")
+      	.removeClass("teacher")
+      	.removeClass("student")
+      	.removeClass("parent")
+      	.addClass(mode);
+      if(mode != "teacher"){
+        $("[contenteditable]")
+        	.removeAttr("contenteditable")
+        	.addClass("contenteditable");
+      } else {
+        $(".contenteditable")
+        	.removeClass("contenteditable")
+        	.attr("contenteditable", "true");
+      }
+      if(mode != "parent"){
+        $("input.parentComplete").attr("disabled", "true");
+      } else {
+        $("input.parentComplete").removeAttr("disabled");
+      }
+      if(mode != "student"){
+        $("input.studentComplete").attr("disabled", "true");
+      } else {
+        $("input.studentComplete").removeAttr("disabled");
+      }
+    });
   });
-  AllTeachers.add(t1);
-  var s1 = new Student({
-    name: "Billy Klubbe"
-  });
-  AllStudents.add(s1);
-  var p1 = new Parent({
-    name: "Mr. Klubbe",
-    children: [s1]
-  });
-  AllParents.add(p1);
-  var c1 = new Course({
-    name: "Introduction to Horse Whispering",
-    students: [s1],
-    teacher: t1
-  });
-  AllCourses.add(c1);
   
-  currentCourse = c1;
-  currentUser = s1;
 });

@@ -5,17 +5,21 @@
       EZOrganizer
     </title>
     <script src="scripts/jquery-1.11.1.min.js"></script>
+    <script src="scripts/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="scripts/underscore-min.js"></script>
     <script src="scripts/backbone-min.js"></script>
     <script src="scripts/backbone.localStorage.js"></script>
     <script src="scripts/ourModel.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery-ui-1.10.4.custom.min.css">
   </head>
-  <body>
+  <body class="teacher">
     <header>
       <nav id="users">
         <select id="userList">
-          
+          <option value="teacher" selected>Mr. Mackey (teacher)</option>
+          <option value="student">Violet Brown (student)</option>
+          <option value="parent">Mrs. Brown (parent)</option>
         </select>
       </nav>
       <h1>
@@ -28,12 +32,113 @@
           Courses
         </h1>
       </header>
-      <ul id="courseList">
-        
+      <ul id="courseList" class="teacher">
+        <li>
+          World Geography
+          <ul class="sectionList">
+            <li>
+              section 1
+            </li>
+            <li>
+              section 2
+            </li>
+          </ul>
+        </li>
+        <li>
+          Politics
+          <ul class="sectionList">
+            <li>
+              section 1
+            </li>
+            <li class="selected">
+              section 2
+            </li>
+            <li>
+              section 3
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ul id="courseList" class="student">
+        <li>
+          Underwater Basket-Weaving 3
+        </li>
+        <li class="selected">
+          Politics
+        </li>
+        <li>
+          AP English Literature
+        </li>
+        <li>
+          Beginning Russian
+        </li>
+        <li>
+          AP Computer Science
+        </li>
+        <li>
+          Creative Writing
+        </li>
+        <li>
+          Pre-Calculus
+        </li>
+      </ul>
+      <ul id="courseList" class="parent">
+        <li>
+          Violet Brown
+          <ul class="studentCourseList">
+            <li>
+              Underwater Basket-Weaving 3
+            </li>
+            <li class="selected">
+              Politics
+            </li>
+            <li>
+              AP English Literature
+            </li>
+            <li>
+              Beginning Russian
+            </li>
+            <li>
+              AP Computer Science
+            </li>
+            <li>
+              Creative Writing
+            </li>
+            <li>
+              Pre-Calculus
+            </li>
+          </ul>
+        </li>
+        <li>
+          Leroy Brown
+          <ul class="studentCourseList">
+            <li>
+              Introduction to Horse Whispering
+            </li>
+            <li>
+              Politics
+            </li>
+            <li>
+              Remedial English
+            </li>
+            <li>
+              Itermediate Russian
+            </li>
+            <li>
+              AP Horse Studies
+            </li>
+            <li>
+              Technical Writing
+            </li>
+            <li>
+              Calculus
+            </li>
+          </ul>
+        </li>
       </ul>
     </nav>
     <main id="assignments">
-      <a id="new-assignment">add an assignment</a>
+      <a id="new-assignment"><img src="images/plus-icon.png" class="icon" />New Assignment</a>
       <ul id="assignmentList">
         
       </ul>
@@ -42,12 +147,18 @@
     </footer>
     
     <script type="text/template" id="assignment-template">
-      <a class="delete">Delete</a>
-      <input class="studentComplete" type="checkbox" <%= studentComplete ? 'checked="checked"' : '' %> />
-      <input class="parentComplete" type="checkbox" <%= parentComplete ? 'checked="checked"' : '' %> />
-      <span id="name" contenteditable><%- name %></span>
-      <span id="dueDate" contenteditable><%- dueDate %></span>
-      <span id="description" contenteditable><%- description %></span>
+      <div id="completion">
+        <div><input class="studentComplete" type="checkbox" <%= studentComplete ? 'checked="checked"' : '' %> /> completed</div>
+        <div><input class="parentComplete" type="checkbox" <%= parentComplete ? 'checked="checked"' : '' %> /> sign off</div>
+      </div>
+      <div id="data">
+      	<span id="name" contenteditable><%- name %></span>
+     	<input id="dp" style="display: none"/><div id="dueDate" contenteditable><%- dueDate %></div>
+     	<span id="description" contenteditable><%- description %></span>
+      </div>
+      <div id="delete_wrapper">
+        <a class="delete"><img src="images/button_cancel.png" class="icon" />Delete</a>
+      </div>
     </script>
     <script type="text/template" id="course-template">
       <li class="course view">

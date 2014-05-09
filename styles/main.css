@@ -3,6 +3,7 @@
 body {
   margin: 0;
   font-family: Ubuntu, Arial;
+  overflow-x: hidden;
 }
 
 body>header {
@@ -32,21 +33,34 @@ nav#courses {
   display: table-cell;
   min-width: 300px;
   border-right: 1px grey solid;
+  vertical-align: top;
+  padding: 0 10px;
 }
 
 nav#courses>header>h1 {
   font-family: Rockwell, Ubuntu Mono, Arial;
   font-weight: bold;
-  font-size: 100%;
+  font-size: 120%;
 }
 
-nav#courses>ul {
+nav#courses ul {
   list-style: none;
   padding: 0;
 }
 
-nav#courses>ul>li {
-  border: 1px dotted grey;
+nav#courses li {
+  padding-left: 6px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+nav#courses li.selected {
+  border-left: 3px solid darkgoldenrod;
+  padding-left: 3px;
+}
+
+li ul, li ol {
+  margin-left: 20px;
 }
 
 main {
@@ -69,6 +83,7 @@ main a#new-assignment {
   /* Rules below not implemented in browsers yet */
   -o-user-select: none;
   user-select: none;
+  margin: 10px;
 }
 
 main a#new-assignment:hover {
@@ -81,9 +96,14 @@ main a#new-assignment:active {
   cursor: pointer;
 }
 
+body:not(.teacher) main a#new-assignment {
+  display: none;
+}
+
 main>ul {
   padding: 0;
   margin: 0;
+  width: 96%;
 }
 
 .assignment {
@@ -95,6 +115,8 @@ main>ul {
   -webkit-transition: background-color 0.25s; /* For Safari 3.1 to 6.0 */
   transition: background-color 0.25s;
   margin: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .assignment.unsaved {
@@ -106,9 +128,10 @@ main>ul {
   width: 100%;
 }
 
-.assignment #date {
+.assignment #dueDate {
   display: block;
   width: 100%;
+  margin: 10px 0;
 }
 
 .assignment #description {
@@ -127,7 +150,6 @@ main>ul {
   border: 1px grey solid;
   background-color: darkgrey;
   padding: 5px;
-  float: right;
   -webkit-transition: background-color 0.25s; /* For Safari 3.1 to 6.0 */
   transition: background-color 0.25s;
   -webkit-user-select: none; /* Chrome/Safari */        
@@ -136,6 +158,7 @@ main>ul {
   /* Rules below not implemented in browsers yet */
   -o-user-select: none;
   user-select: none;
+  white-space: nowrap;
 }
 
 .assignment a.delete:hover {
@@ -146,4 +169,49 @@ main>ul {
 .assignment a.delete:active {
   background-color: white;
   cursor: pointer;
+}
+
+body:not(.teacher) .assignment a.delete {
+  display: none;
+}
+
+body:not(.teacher) #ui-datepicker-div {
+  display: none !important;
+}
+
+body.teacher .assignment #completion {
+  display: none;
+}
+
+.assignment>* {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.assignment>#data {
+  width: 100%;
+}
+
+.assignment>#completion {
+  padding-right: 10px;
+  white-space: nowrap;
+}
+
+.assignment>#delete_wrapper {
+  padding-left: 10px;
+}
+
+body.teacher ul.parent, 
+body.teacher ul.student, 
+body.student ul.parent, 
+body.student ul.teacher, 
+body.parent ul.student, 
+body.parent ul.teacher {
+  display: none;
+}
+
+img.icon {
+  width: 20px;
+  vertical-align: bottom;
+  margin-right: 5px;
 }
